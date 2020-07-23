@@ -1,0 +1,29 @@
+* {
+    @extend %oswald;
+}
+
+html {
+    overflow-x: hidden;
+    min-height: 100vh;
+    @include rem-baseline;
+    @include breakpoint(tablet) {
+        @include rem-baseline(115%);
+    }
+    @include breakpoint(laptop) {
+        @include rem-baseline(125%);
+    }
+}
+
+body {
+    min-height: 100vh;
+}
+
+button {
+    &:focus {
+        outline: none;
+    }
+}
+
+.main-container {
+    min-height: calc(100vh - #{$header-height});
+}
