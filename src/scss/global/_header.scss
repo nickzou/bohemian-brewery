@@ -69,6 +69,11 @@
     &.is-active {
         left: 0;
     }
+    nav {
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
     ul {
         margin-bottom: 0;
         padding-inline-start: 0;
@@ -94,10 +99,4 @@
             fill: $burgundy;
         }
     }
-}
-
-.menu-main-menu-container {
-    position: relative;
-    text-align: center;
-    z-index: 2;
 }
