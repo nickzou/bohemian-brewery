@@ -1,19 +1,19 @@
 <?php
-    function get_component( $file, $component_args = array(), $cache_args = array() ) {
-        $component_args = wp_parse_args( $component_args );
-        $cache_args = wp_parse_args( $cache_args );
-        if ( $cache_args ) {
-            foreach ( $component_args as $key => $value ) {
+    function get_component( $file, $c = array(), $cc = array() ) {
+        $c = wp_parse_args( $c );
+        $cc = wp_parse_args( $cc );
+        if ( $cc ) {
+            foreach ( $c as $key => $value ) {
                 if ( is_scalar( $value ) || is_array( $value ) ) {
-                    $cache_args[$key] = $value;
+                    $cc[$key] = $value;
                 } else if ( is_object( $value ) && method_exists( $value, 'get_id' ) ) {
-                    $cache_args[$key] = call_user_method( 'get_id', $value );
+                    $cc[$key] = call_user_method( 'get_id', $value );
                 }
             }
-            if ( ( $cache = wp_cache_get( $file, serialize( $cache_args ) ) ) !== false ) {
-                if ( ! empty( $component_args['return'] ) )
+            if ( ( $cache = wp_cache_get( $file, serialize( $cc ) ) ) !== false ) {
+                if ( ! empty( $c['return'] ) )
                     return $cache;
-                echo $cache;
+                return $cache;
                 return;
             }
         }
@@ -27,13 +27,13 @@
         $return = require( $file );
         $data = ob_get_clean();
         do_action( 'end_operation', 'get_component::' . $file_handle );
-        if ( $cache_args ) {
-            wp_cache_set( $file, $data, serialize( $cache_args ), 3600 );
+        if ( $cc ) {
+            wp_cache_set( $file, $data, serialize( $cc ), 3600 );
         }
-        if ( ! empty( $component_args['return'] ) )
+        if ( ! empty( $c['return'] ) )
             if ( $return === false )
                 return false;
             else
                 return $data;
-        echo $data;
+        return $data;
     }
